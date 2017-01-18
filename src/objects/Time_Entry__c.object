@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>false</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Date__c</fullName>
+        <defaultValue>TODAY()</defaultValue>
+        <externalId>false</externalId>
+        <label>Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Hours_Spent__c</fullName>
+        <externalId>false</externalId>
+        <label>Hours Spent (Direct Input By User)</label>
+        <precision>6</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Logged_Hours__c</fullName>
+        <externalId>false</externalId>
+        <label>Logged Hours (Time Logs)</label>
+        <summarizedField>Time_Log__c.Hours_Spent__c</summarizedField>
+        <summaryForeignKey>Time_Log__c.Time_Entry__c</summaryForeignKey>
+        <summaryOperation>sum</summaryOperation>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Person__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Person</label>
+        <referenceTo>Project_Team__c</referenceTo>
+        <relationshipLabel>Time Entries</relationshipLabel>
+        <relationshipName>Time_Entries</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Project__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Project</label>
+        <referenceTo>Project__c</referenceTo>
+        <relationshipLabel>Time Entries</relationshipLabel>
+        <relationshipName>Time_Entries</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Task__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Task</label>
+        <referenceTo>Task__c</referenceTo>
+        <relationshipLabel>Time Entries</relationshipLabel>
+        <relationshipName>Time_Entries</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Time_Sheet__c</fullName>
+        <externalId>false</externalId>
+        <label>Time Sheet</label>
+        <referenceTo>Time_Sheet2__c</referenceTo>
+        <relationshipLabel>Time Entries</relationshipLabel>
+        <relationshipName>Time_Entries</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Timer_Started_On__c</fullName>
+        <externalId>false</externalId>
+        <label>Timer Started On</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Timer_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Timer Status</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Running</fullName>
+                <default>true</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Paused</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Stopped</fullName>
+                <default>false</default>
+            </picklistValues>
+            <restrictedPicklist>true</restrictedPicklist>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Total_Hours2__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( Hours_Spent__c != 0 , Hours_Spent__c , Logged_Hours__c )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Total Hours</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <label>Time Entry</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <displayFormat>TE-{00000}</displayFormat>
+        <label>Time Entry Name</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Time Entries</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+    <validationRules>
+        <fullName>Record_Locked</fullName>
+        <active>true</active>
+        <errorConditionFormula>IF(NOT(ISPICKVAL(Time_Sheet__r.Approval_Status__c, &apos;New&apos;)), true, false)</errorConditionFormula>
+        <errorMessage>Record is Locked cannot be Edited.</errorMessage>
+    </validationRules>
+    <webLinks>
+        <fullName>Pause_Resume</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Pause/Resume</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/35.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/35.0/apex.js&quot;)} 
+
+
+
+var timeEntry = sforce.connection.query(&quot;SELECT Id,Timer_Status__c from Time_Entry__c where Project__c = &apos;{!Project__c.Id }&apos; and ( Timer_Status__c = &apos;Running&apos; or Timer_Status__c = &apos;Paused&apos; )  limit 1&quot;);
+
+records = timeEntry.getArray(&quot;records&quot;); 
+
+var status = records[0].Timer_Status__c;
+
+if ( status == &apos;Running&apos; ) {
+status = &apos;Paused&apos; ;
+} else if ( status == &apos;Paused&apos; ) {
+status = &apos;Running&apos; ;
+}
+
+var newRecords = []; 
+var c = new sforce.SObject(&quot;Time_Entry__c&quot;); 
+c.id = records[0].Id; 
+c.Timer_Status__c = status; 
+newRecords.push(c); 
+result = sforce.connection.update(newRecords); 
+
+window.location.reload();</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Stop</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Stop</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/35.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/35.0/apex.js&quot;)} 
+
+
+
+var timeEntry = sforce.connection.query(&quot;SELECT Id,Timer_Status__c from Time_Entry__c where Project__c = &apos;{!Project__c.Id }&apos; and ( Timer_Status__c = &apos;Running&apos; or Timer_Status__c = &apos;Paused&apos; )  limit 1&quot;);
+
+records = timeEntry.getArray(&quot;records&quot;); 
+
+var status = records[0].Timer_Status__c;
+ 
+
+var newRecords = []; 
+var c = new sforce.SObject(&quot;Time_Entry__c&quot;); 
+c.id = records[0].Id; 
+c.Timer_Status__c = &apos;Stopped&apos;; 
+newRecords.push(c); 
+result = sforce.connection.update(newRecords); 
+
+window.location.reload();</url>
+    </webLinks>
+</CustomObject>

@@ -1,0 +1,250 @@
+<apex:page controller="TimerTrackerCont" standardStylesheets="false" showHeader="false" sidebar="false" docType="html-5.0" >
+  
+  <apex:form id="frm">
+  
+  <!-- STYLE SHEETS -->  
+  <apex:stylesheet value="{!URLFOR($Resource.BSTable, 'bootstrap.min.css')}"  />
+  <apex:stylesheet value="{!URLFOR($Resource.BSTable, 'dataTables.bootstrap.min.css')}"  />
+  <apex:stylesheet value="{!URLFOR($Resource.BSTable, 'responsive.bootstrap.min.css')}"  />
+  <apex:stylesheet value="{!URLFOR($Resource.BSTable, 'bootstrap-glyphicons.css')}"  />
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet"/>
+  <apex:stylesheet value="{!URLFOR($Resource.BSTable, 'buttons.dataTables.min.css')}"  />
+  <apex:stylesheet value="{!URLFOR($Resource.BSTable, 'select2.min.css')}"  />
+   
+  <!-- JS FILES -->  
+  <apex:includeScript value="{!URLFOR($Resource.BSTable, 'jquery-1.12.3.js')}"/> 
+  <apex:includeScript value="{!URLFOR($Resource.BSTable, 'bootstrap.min.js')}"/>
+  <apex:includeScript value="{!URLFOR($Resource.BSTable, 'jquery.dataTables.min.js')}"/>
+  <apex:includeScript value="{!URLFOR($Resource.BSTable, 'dataTables.bootstrap.min.js')}"/>
+  <apex:includeScript value="{!URLFOR($Resource.BSTable, 'dataTables.responsive.min.js')}"/>
+  <apex:includeScript value="{!URLFOR($Resource.BSTable, 'responsive.bootstrap.min.js')}"/>
+  <apex:includeScript value="{!URLFOR($Resource.BSTable, 'JQueryTimer.js')}"/>
+  <apex:includeScript value="{!URLFOR($Resource.BSTable, 'moment.js')}"/>
+   
+   
+     
+    <script>
+             
+        $(document).ready(function() {
+            
+            console.log(' ==> ready! ');
+            
+            //INITILIAZE TABLE 
+            $('#example').DataTable( {
+                "pageLength": 5,
+                responsive: true,
+                dom: 'Bfrtip',
+                "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {           
+                 
+                     //FORMAT DATE COLUMN 
+                     $('td:eq(4)', nRow).html(moment($('td:eq(4)', nRow).text()).format('MM/DD/YYYY'));
+                     
+                     //FORMAT DATE COLUMN 
+                     var TSDates = $('td:eq(8)', nRow).text().split('-');
+                     $('td:eq(8)', nRow).html( moment(TSDates[0]).format('MM/DD/YYYY') +'-'+ moment(TSDates[1]).format('MM/DD/YYYY') );
+                     
+                     var dataval = aData+'';
+                     var divid = dataval.substring( dataval.indexOf("=")+2 , dataval.indexOf(">")-2);
+                      
+                     var timeSpent = $('td:eq(2)', nRow).text() ;
+                     var a = timeSpent.split('.'); // split it at the colons
+                     
+                     var hours = a[0] * 60 * 60 ;
+                     var secs = a[1] * 60 ;
+                     
+                     var proj = $('td:eq(4)', nRow).text().trim();
+                       proj = proj.replace(/\s/g, '');
+                       
+                     var hrs = $('td:eq(2)', nRow).text().trim();
+                       hrs = hrs.replace(/\s/g, '');
+                   
+                 
+                     // GET THE STATUS OF TIME ENTRY
+                     var status = $('td:eq(1)', nRow).text() ;  
+                        
+                     
+                     $('td:eq(0)', nRow).timer({ seconds: hours+secs, format: '%H:%M:%S' });
+                     
+                    
+                     if ( status.trim() === 'Stopped' ||  status.trim() === 'Paused'  ) {  
+                         $('td:eq(0)', nRow).timer('pause');
+                     
+                     }
+                 
+                    //SET ID FOR TIMER DIV FOR REFERENCES
+                    var setNewId = $('td:eq(1)', nRow).html()  ;
+                    setNewId = setNewId.substring( setNewId.indexOf("id=")+4 , setNewId.indexOf("type")-2) + 'timer';
+                    $('td:eq(0)', nRow).attr('id', setNewId );
+                    
+                    //LOCKED RECORD
+                    var iSLocked = $('td:eq(9)', nRow).text().trim() ;
+                    
+                    if ( iSLocked !== 'New' ) {  
+                        $('td:eq(1)', nRow).text('Locked');
+                        //$('td:eq(1)', nRow).attr('class', 'btn btn-default');
+
+                    }
+
+                    return null; 
+                }
+            });
+                
+                
+                //TABLE CHANGE EVENTS STARTS
+                $('#example').on('click', 'td', function(event) {   
+                    
+                    if ( $(this).index() == 1 ) {
+            
+                        var status = $(this).text().trim() ;
+                        var firtColId = $(this).closest('tr').find('td:first').attr('id')  ;
+                        var recordid =  firtColId.replace('timer', '');                        
+                        
+                        //IF CURRENT STATUS IS PAUSED  
+                        if ( status == 'Paused' || status == 'Stopped' ) { 
+                        
+                            $('#'+firtColId).timer('resume');
+                            $(this).text('Running');
+                            $(this).attr('class', 'btn btn-success');
+                            
+                            UpdateStatusAF(recordid,'Running');
+                        
+                        //IF CURRENT STATUS IS RUNNING
+                        } else if ( status == 'Running' ) {
+                        
+                            $('#'+firtColId).timer('pause');
+                            $(this).text('Paused');
+                            $(this).attr('class', 'btn btn-danger');
+                            
+                            UpdateStatusAF(recordid,'Paused');
+                        }
+                    }
+                });
+                //TABLE CHANGE EVENTS ENDS
+                
+            // IF NO TIME SHEET IS THERE THEN DISABLE THE BUTTON    
+            var timeSheetSize = '{!TimeSheets.size}' ;  
+            if( timeSheetSize == 0 ) { console.log(' TS Size ==> ' + timeSheetSize  );
+                $( "[id*='newTimeEntryBtn']" ).attr('disabled','true');
+            } 
+            
+            
+             
+            
+            $("[id*='TimeEntryCreateBtn']").click(function(){
+                location.reload();// window.location.reload();
+            })
+            
+        });
+        
+         
+        
+    </script>
+  
+  <br/><br/><br/>
+  
+   
+   
+   <!-- Action functions -->
+   <apex:actionFunction name="UpdateStatusAF" action="{!UpdateStatus}" rerender="view" >   
+        <apex:param id="recId" name="recId" value="" />
+        <apex:param id="newStatus" name="newStatus" value="" />
+   </apex:actionFunction>
+   
+   <apex:actionFunction name="initAF" action="{!init}" rerender="table" id="initAF" >   
+   </apex:actionFunction>
+     
+      
+   <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" id="newTimeEntryBtn" data-content="Default popover" >
+          New Time Entry 
+        </button>
+    <div width="20" /><apex:outputText rendered="{!(TimeSheets.size = 0)}" VAlue=" You Don`t have Time Sheet to create New Time Entry. Please contact Your Project Manager." /> 
+    
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+            <h4 class="modal-title" id="myModalLabel1">New Time Entry</h4>
+          </div>
+          <div class="modal-body"> <apex:pageMessages />
+            <form lpformnum="1">
+              <div class="form-group">
+                <label for="formGroupExampleInput">Project</label>
+                 <apex:selectList value="{!projectId}" size="1" id="projectList" styleClass="form-control" >
+                  <apex:selectOptions value="{!Projects}"/>
+                </apex:selectList>
+              </div>
+              <div class="form-group">
+                <label for="exampleSelect1">Task</label>
+                <apex:selectList value="{!taskId}" size="1" id="taskList" styleClass="form-control" >
+                  <apex:selectOptions value="{!Tasks}"/>
+                </apex:selectList>
+              </div>
+              <div class="form-group">
+                <label for="exampleSelect1">Time Sheet Week</label>
+                <apex:selectList value="{!TimeSheet}" size="1" id="TimeSheetList" styleClass="form-control"  >
+                  <apex:selectOptions value="{!TimeSheets}"  />
+                </apex:selectList>
+              </div>
+              <div class="form-group">
+                <label for="exampleTextarea">Date</label>
+                <apex:input id="selDate"  type="date" value="{!TimeEntryDate}" styleclass="form-control" />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <apex:commandButton id="TimeEntryCreateBtn" value="Create" action="{!newTimeEntry}" styleclass="btn btn-primary" />
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+        <div clas="container" >
+            <table id="example" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Timer</th>
+                        <th>Action</th>
+                        <th>Hours Spent</th>
+                        <th>User</th>
+                        <th>Date</th>
+                        <th>Project</th>
+                        <th>Task</th>
+                        <th>Timer Status</th>
+                        <th>Time Sheet</th>
+                        <th>Approval Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                 <apex:repeat value="{!TimeEntries}"  var="a">  
+                    <tr>
+                      
+                      <td  >   <div  />   </td>
+                      <td style="margin:5px;"> 
+                          <button type="button"  id="{!a.Id}" class="{!If(a.Timer_Status__c =='Running' ,'btn btn-success','btn btn-danger')} ">{!a.Timer_Status__c}</button>
+                       <!--<img height="30" width="40" src="http://www.clipartkid.com/images/339/animated-ticking-clock-clip-art-animated-clock-gif-clipart-iqcJD6-clipart.gif" />  -->  </td>
+                        
+                      <td  >   {!a.Total_Hours2__c} </td>
+                      <td>  {!a.User__c}</td>
+                      <td>  {!a.Date__c}</td>
+                      <td>  <a href="/{!a.Project__c}" target="_blank" > {!a.Project__r.Name} </a> </td>
+                      <td>  <a href="/{!a.Task__c}" target="_blank" > {!a.Task__r.Name } </a> </td>
+                      <td>  {!a.Timer_Status__c}</td>
+                      <td>   {!a.Time_Sheet__r.Start_Date__c } - {!a.Time_Sheet__r.End_Date__c}  </td>
+                      <td>   <a href="/{!a.Time_Sheet__c}" target="_blank" > {!a.Time_Sheet__r.Approval_Status__c} </a> </td>
+                    </tr>
+                   </apex:repeat>
+                </tbody>
+            </table>
+         </div>
+          
+ 
+    
+ </apex:form>
+</apex:page>

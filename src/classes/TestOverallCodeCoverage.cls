@@ -38,6 +38,18 @@ private class TestOverallCodeCoverage {
         Update TimeEntry ;
         
         System.assertEquals(TimeEntry.Timer_Status__c, 'Running');
+        
+        Project__c Proj = TestDataUtils.getProject();
+        Proj.Project_Manager__c = NULL ;
+        Update Proj ;
+        
+        Proj.Project_Manager__c = UserInfo.getUserid() ;
+        Update Proj ;
+        
+        TimerTrackerCont timeTrackerCont = New TimerTrackerCont ();
+        timeTrackerCont.getProjects();
+        timeTrackerCont.getTasks();
+        timeTrackerCont.getTimeSheets();
             
         Test.stopTest();
       

@@ -179,9 +179,28 @@
         <type>Number</type>
         <unique>false</unique>
     </fields>
+    <fields>
+        <fullName>User__c</fullName>
+        <externalId>false</externalId>
+        <formula>Person__r.User__r.FirstName+&apos; &apos;+Person__r.User__r.LastName</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>User</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
     <label>Time Entry</label>
     <listViews>
         <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Task__c</columns>
+        <columns>Project__c</columns>
+        <columns>User__c</columns>
+        <columns>Total_Hours2__c</columns>
+        <columns>Timer_Status__c</columns>
+        <columns>Time_Sheet__c</columns>
+        <columns>Date__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
     </listViews>

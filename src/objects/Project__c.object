@@ -96,7 +96,7 @@
         <fullName>Budget__c</fullName>
         <externalId>false</externalId>
         <label>Budget</label>
-        <precision>5</precision>
+        <precision>10</precision>
         <required>false</required>
         <scale>0</scale>
         <trackTrending>false</trackTrending>

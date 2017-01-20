@@ -8,4 +8,5 @@
     <tab>Time_Log__c</tab>
     <tab>Time_Entry__c</tab>
     <tab>Time_Sheet2__c</tab>
+    <tab>Timer_Tracker</tab>
 </CustomApplication>
